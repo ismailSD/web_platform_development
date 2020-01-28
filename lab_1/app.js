@@ -1,6 +1,5 @@
 var http = require('http');
 
-http.set("view engine", "ejs");
 http.createServer(function(req,res){
     // the replace function removes any query strings and slashes
     // the toLowerCase functions makes it lower case 
