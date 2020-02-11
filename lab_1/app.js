@@ -1,41 +1,22 @@
-var http = require('http'),
-        url = require("url"),
-    fs = require('fs'),
-    path = require("path");
-var staticBasePath = './static';
+var     express         = require('express'),
+        app             = express(),
+        body_parser     = require('body-parser'),
+        http            = require('http').createServer(app),
+        url             = require("url"),
+        fs              = require('fs'),
+        path            = require("path");
 
-function serveStaticFile(res, path, contentType, responseCode) {
-    if(!responseCode) responseCode = 200;
-    fs.readFile(__dirname + path, function(err,data) {
-        if(err) {
-            res.writeHead(500, { 'Content-Type': 'text/plain' });
-            res.end('500 - Internal Error');
-        } else {
-            res.writeHead(responseCode,{ 'Content-Type': contentType });
-            res.end(data);
-        }
-    });
-}
+var port = process.env.PORT || 3000;
 
-http.createServer(function(req,res){
-    // normalize url by removing querystring, optional
-    // trailing slash, and making lowercasevar 
-    path = req.url.replace(/\/?(?:\?.*)?$/, '').toLowerCase();
-    
-    switch(path) {
-        case '':
-            serveStaticFile(res, '/views/home.html', 'text/html');
-            break;
-        case '/about':
-            serveStaticFile(res, '/views/about.html', 'text/html');
-            break;
-        case '/img/logo.jpg':
-            serveStaticFile(res, '/public/img/logo.jpg', 'image/jpeg');
-            break;
-        default:
-            serveStaticFile(res, '/views/404.html', 'text/html',404);
-            break;
-    }
-}).listen(3000);
+app.use('/assets', express.static(path.join(__dirname, 'public')));
 
-console.log('Server started on localhost:3000; press Ctrl-C to terminate....');
+app.use(body_parser.urlencoded({extended: true}));
+app.set("view engine", "ejs");
+
+app.get('/', (req,res)=>{
+    res.render('index');
+});
+
+
+
+http.listen(port, ()=>{console.log(`Server started on port ${port}...`)});

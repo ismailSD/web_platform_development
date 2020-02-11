@@ -3,3 +3,25 @@ body{
     width: 100vh;
     color: red;
 }
+#landing-page{
+    width: 100vh;
+    height: 100vh;
+    margin: 0 auto;
+    background-color: teal;
+}
+#landing-page-main-container{
+    position: absolute;
+    top: 50%;
+    left: auto;
+    right: auto;
+    background: orange;
+}
+#landing-page-main-container h1{
+    text-align: center;
+}
+footer{
+    position: absolute;
+    bottom: 0;
+    left: auto;
+    right: auto;
+}
