@@ -1,0 +1,15 @@
+<%- include('partials/header') %>
+
+<div class="main-container">
+    <h1>Edit employee <%=employee.name%></h1>
+    <div class="form-container">
+        <form METHOD="POST" action="/employees/<%=employee._id%>?_method=PUT">
+            <input type="text" name="name" value="<%=employee.name%>" required>
+            <input type="text" name="phone" value="<%=employee.phone%>" required>
+            <input type="email" name="email" value="<%=employee.email%>" required>
+            <button type="Update">Submit</button>
+        </form>
+    </div>
+</div>
+
+<%- include('partials/footer') %>
