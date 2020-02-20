@@ -34,20 +34,14 @@ mongoose.connect(uri,{
 // USE EXPRESS MIDDLEWARE.......................
 app.use('/assets', express.static(path.join(__dirname, 'public')));
 app.use(body_parser.urlencoded({extended: true}));
-app.use(methodOverride('_method'));
-
+//app.use(methodOverride('_method'));
 app.set("view engine", "ejs");
 
 // GET ROUTES...............................................
 app.get('/', (req,res)=>{
     // get our data from the database and render the index page with that data
     Employee.find({}).then(function (employees) {
-        // if req xml-http-request then
-        if(req.xhr){
-            res.json(employees);
-        }else {
-            res.render('index', {employees: employees});
-        }
+        res.render('index', {employees: employees});
     }).catch((err)=>console.log(err));
 });
 app.get('/employees/:id/edit', (req,res)=>{
@@ -75,7 +69,6 @@ app.post('/employees', function (req,res) {
         }else {
             res.redirect('/');
         }
-
     }).catch((err)=>{
         console.log("Break glass!", err);
         res.send('404');
@@ -85,8 +78,13 @@ app.post('/employees', function (req,res) {
 // DESTROY ROUTES..........................
 app.delete('/employees/:id', function (req, res) {
     Employee.findOneAndDelete(req.params.id).then(function (e) {
-        console.log("Successfully removed employee =>",e);
-        res.redirect('/');
+        if(req.xhr){
+            res.json(e);
+            console.log("Successfully removed employee =>",e);
+        }else {
+            console.log("Successfully removed employee =>", e);
+            res.redirect('/');
+        }
     }).catch(function (err) {
         console.log("Break glass!", err);
         res.redirect('/');
@@ -99,9 +97,16 @@ app.put('/employees/:id', function (req,res) {
         phone: req.body.phone,
         email: req.body.email
     };
-    Employee.findOneAndUpdate(req.params.id, employee).then(function (e) {
-        console.log("Successfully updated employee =>",e);
-        res.redirect('/');
+    // add third argument [ new: true ] to tell that the e we get back is new not the original object
+    Employee.findOneAndUpdate(req.params.id, employee, {new: true}).then(function (e) {
+        if(req.xhr){
+            res.json(e);
+            console.log("Successfully updated employee =>",e);
+        }else {
+            console.log("Successfully updated employee =>", e);
+            res.redirect('/');
+        }
+
     }).catch(function (err) {
         console.log("Break glass!", err);
         res.redirect('/');

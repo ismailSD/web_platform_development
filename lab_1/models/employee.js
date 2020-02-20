@@ -1,11 +1,10 @@
-const mongoose = require('mongoose');
-
-let Schema = mongoose.Schema;
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 
 let employeeSchema = new Schema({
-   name: {type: String},
-   phone: {type: String},
-   email: {type: String},
+   name: String,
+   phone: String,
+   email: String
 });
 
 let Employee = mongoose.model('Employee', employeeSchema);

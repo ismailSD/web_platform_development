@@ -4,28 +4,36 @@
     <h1>Welcome to node and express js</h1>
     <h3>Click on the button below to learn more</h3>
     <div class="form-container">
-        <form class="newEmployeeForm" METHOD="POST" action="/employees">
-            <input type="text" name="name" placeholder="Name" required>
-            <input type="text" name="phone" placeholder="Phone" required>
-            <input type="email" name="email" placeholder="Email" required>
+        <form id="newEmployeeForm" METHOD="POST" action="/employees">
+            <input class="new-form-input" type="text" name="name" placeholder="Name" required>
+            <input class="new-form-input" type="text" name="phone" placeholder="Phone" required>
+            <input class="new-form-input" type="email" name="email" placeholder="Email" required>
             <button type="submit">Submit</button>
         </form>
     </div>
     <div class="contents">
+        <ul id="employeeList"><!--give it id so we can update it using ajax-->
         <%if(employees!= null){%>
         <%employees.forEach((e)=>{%>
-        <ul>
-            <li>
+            <li id="listElement"><!--parent to the form-->
+                <!--Hide this edit form using css by default-->
+                <form id="editForm" METHOD="POST" action="/employees/<%=e._id%>">
+                    <input type="text" name="name" value="<%=e.name%>" required>
+                    <input type="text" name="phone" value="<%=e.phone%>" required>
+                    <input type="email" name="email" value="<%=e.email%>" required>
+                    <button type="submit">Update</button>
+                </form>
+
                 <span><strong>Name:</strong> <%=e.name%> </span>
                 <span><strong>Phone:</strong> <%=e.phone%> </span>
                 <span><strong>Email:</strong> <%=e.email%> </span>
-                <a href="/employees/<%=e._id%>/edit">Edit</a>
-                <form class="delete-form" method="POST" action="/employees/<%=e._id%>?_method=DELETE">
-                    <button>Delete</button></form>
+                <button class="edit-btn">Edit</button><!--give a class so we can select all buttons-->
+                <form id="deleteForm" method="POST" action="/employees/<%=e._id%>">
+                    <button type="submit">Delete</button></form>
             </li>
-        </ul>
         <%})%>
         <%}%>
+        </ul>
     </div>
 </div>
 

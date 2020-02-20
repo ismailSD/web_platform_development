@@ -16,6 +16,10 @@ body{
     margin: 0 auto;
     padding: 20px 0;
 }
-.delete-form{
+#deleteForm{
     display: inline-block;
+}
+
+#editForm{
+    display: none;
 }
